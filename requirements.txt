@@ -1,3 +1,18 @@
+# Streamlit
 streamlit
+
+# Data handling
 pandas
-youtube-transcript-api
+
+# Google API
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+gspread
+google-auth
+
+# YouTube transcript API
+youtube-transcript-api==0.6.1
+
+# Translation
+googletrans==4.0.0-rc1
