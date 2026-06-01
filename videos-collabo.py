@@ -21,12 +21,26 @@ st.markdown("""
             padding-right: 2rem !important;
         }
         
-        /* Hides default empty top bar space */
+            
+        /* 2. Freeze Main Title Area & Force It Upward */
         [data-testid="stHeader"] {
-            display: none; 
+            background-color: transparent !important;
+            height: 0rem !important;
         }
+        /* Ensure the sidebar toggle button sits safely on top of everything */
+        [data-testid="stSidebarCollapseButton"] {
+            z-index: 1000 !important;
+            background-color: #1E232A !important; /* Makes it pop out cleanly */
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+
+
+
+
+
         
-        /* 2. DYNAMICALLY ANCHORED FROZEN TITLE AREA */
+        /* 3. DYNAMICALLY ANCHORED FROZEN TITLE AREA */
         /* This binds the title container natively inside the scrolling viewport wrapper */
         [data-testid="stMainView"] {
             display: flex;
@@ -44,12 +58,12 @@ st.markdown("""
             width: 100%;
         }
         
-        /* 3. Push Sidebar Elements to the absolute top */
+        /* 4. Push Sidebar Elements to the absolute top */
         [data-testid="stSidebarUserContent"] {
             padding-top: 0.5rem !important;
         }
         
-        /* 4. Tighten spacing layout metrics */
+        /* 5. Tighten spacing layout metrics */
         hr {
             margin-top: 0.5rem !important;
             margin-bottom: 0.5rem !important;
