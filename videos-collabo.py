@@ -133,7 +133,7 @@ if not video_data.empty:
     # 📌 RENDER FROZEN STICKY HEADER (Stays on screen when users scroll down results)
     st.markdown("""
         <div class="frozen-title">
-            <h1 style="margin:0; padding:0; font-size: 2rem;">📺 Korean Video Clips</h1>
+            <h1 style="margin:0; padding:10; font-size: 1.5rem;">📺 Korean Video Clips</h1>
             <p style="margin:0; padding:0; font-size: 0.95rem; color: #a3a8b4;">A collaborative repository for authentic language practice.</p>
         </div>
     """, unsafe_allow_html=True)
