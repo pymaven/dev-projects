@@ -71,20 +71,32 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 1. LINK TO YOUR PUBLISHED GOOGLE SHEET CSV
-GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQCJHW5XPCCYbVS-_u1vmk13pGAMeVXN6xvXtPLtUWvx11Ga-9n2ViJ530xUUaFfLHt-VI6L4nLcMVl/pub?output=csv"
 
-@st.cache_data(ttl=5)  # Refresh cache every 5 seconds so updates feel instant
+@st.cache_data(ttl=5)
 def load_data():
-    try:
-        df = pd.read_csv(GOOGLE_SHEET_CSV_URL)
-        df.columns = df.columns.str.strip()
-        for col in df.select_dtypes(include=['object']).columns:
-            df[col] = df[col].str.strip()
-        return df
-    except Exception as e:
-        st.error(f"Error connecting to master database: {e}")
-        return pd.DataFrame()
+    # 🔗 Define all your separate instructor spreadsheet links here
+    sheet_urls = [
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vQCJHW5XPCCYbVS-_u1vmk13pGAMeVXN6xvXtPLtUWvx11Ga-9n2ViJ530xUUaFfLHt-VI6L4nLcMVl/pub?output=csv",
 
+    ]
+    
+    all_dataframes = []
+    
+    for url in sheet_urls:
+        try:
+            # Read each individual spreadsheet safely
+            individual_df = pd.read_csv(url)
+            all_dataframes.append(individual_df)
+        except Exception as e:
+            # If one sheet has a temporary network issue, the app won't crash entirely
+            st.error(f"Error loading a spreadsheet layer: {e}")
+            
+    if all_dataframes:
+        # 🤝 Combine all rows from all sheets into one single master list
+        master_df = pd.concat(all_dataframes, ignore_index=True)
+        return master_df
+    else:
+        return pd.DataFrame() # Return an empty dataframe if everything fails
 
 
 # Helper function to convert raw seconds to a readable HH:MM:SS or MM:SS string
@@ -205,12 +217,17 @@ if not video_data.empty:
         # 1. Title with zeroed-out bottom margin
         st.markdown(
             f'<p style="font-size: 24px; font-weight: 600; margin-bottom: 0px;">'
-            f'Title: {selected_level}, {selected_lesson}, {selected_grammar}'
+            f'Lesson: {selected_level}, {selected_lesson}, {selected_grammar}'
             f'</p>', 
             unsafe_allow_html=True
         )        
-        st.caption(f"Found {len(final_filtered)} relevant example(s)")
-
+   
+        st.markdown(
+            f'<p style="font-size: 0.85rem; color: #a3a8b4; margin-top: 0px; margin-bottom: 15px;">'
+            f'Matches found: {len(final_filtered)}'
+            f'</p>',
+            unsafe_allow_html=True
+        )
 
 
         st.divider()
