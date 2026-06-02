@@ -77,6 +77,7 @@ def load_data():
     # 🔗 Define all your separate instructor spreadsheet links here
     sheet_urls = [
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vQCJHW5XPCCYbVS-_u1vmk13pGAMeVXN6xvXtPLtUWvx11Ga-9n2ViJ530xUUaFfLHt-VI6L4nLcMVl/pub?output=csv",
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vQnYTK3UW7nIEFoTlxzB24RsGoDiMU0y8GzdJOFxPjyMv7fBfy2L4Ww-oZl7Lrtb8DPlqzLLZstXMp4/pub?output=csv"
 
     ]
     
