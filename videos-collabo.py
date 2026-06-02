@@ -214,6 +214,17 @@ if not video_data.empty:
                 embed_url = f"https://www.youtube-nocookie.com/embed/{video_id}?start={start_time}&rel=0&modestbranding=1"
                 if end_time:
                     embed_url += f"&end={end_time}"
+
+
+                # Create a unique session state key for this video row if it doesn't exist
+                # This tracks the internal trigger state for our manual replay button
+                state_key = f"replay_{video_id}_{idx}"
+                if state_key not in st.session_state:
+                    st.session_state[state_key] = 0
+
+
+
+
                 
                 with st.container():
                     col1, col2 = st.columns([2, 1])
@@ -232,7 +243,8 @@ if not video_data.empty:
                                 sandbox="allow-scripts allow-same-origin allow-popups allow-presentation">
                             </iframe>
                             ''',
-                            height=600
+                            height=600,
+                            key=f"iframe_{video_id}_{idx}_{st.session_state[state_key]}"
                         )
                     
                     with col2:
@@ -241,18 +253,29 @@ if not video_data.empty:
                         end_formatted = format_time(end_time) if end_time else None
                         
                         time_display = f"`{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else "")
-                        st.markdown(f"**📍Timestamp:** {time_display}")
 
 
-
+                        st.markdown(f"**📍Timestamp:** `{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else ""))
                         
+                        # 🔄 THE MANUAL REPLAY BUTTON
+                        # Clicking this changes the state key, instantly resetting the video loop above
+                        if st.button("🔁 Replay Clip", key=f"btn_{video_id}_{idx}"):
+                            st.session_state[state_key] += 1
+                            st.sidebar.empty() # Forces a clean quick UI sync
+                            st.rerun()
+                        
+                        # Interactive Transcripts (Accordion layout)
                         if pd.notna(row['korean_text']) and str(row['korean_text']).strip() != "":
-                            with st.expander("Show Korean Transcript", expanded=False):
+                            with st.expander("👁️ Show Korean Transcript", expanded=False):
                                 st.write(row['korean_text'])
                                 
                         if pd.notna(row['english_text']) and str(row['english_text']).strip() != "":
-                            with st.expander("Show English Translation", expanded=False):
+                            with st.expander("👁️ Show English Translation", expanded=False):
                                 st.write(row['english_text'])
+
+
+
+
                                 
                 st.markdown("---")
     else:
