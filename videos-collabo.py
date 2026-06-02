@@ -24,63 +24,16 @@ st.markdown("""
             
             
 
-        /* 2. Freeze Main Title Area & Force It Upward */
+        /* 2. standard top bar spacing to accommodate native mobile controls */
         [data-testid="stHeader"] {
             background-color: transparent !important;
-            height: 0rem !important;
         }
         
-        /* 📱 CLEAN & POLISHED MOBILE SIDEBAR TOGGLE OVERRIDE */
-        /* Hide all default clashing backgrounds, borders, and shadows entirely */
-        [data-testid="stSidebarCollapseButton"], 
-        [data-testid="stSidebarCollapseButton"] button,
-        [data-testid="stSidebarCollapseButton"] button:hover {
-            background: transparent !important;
-            background-color: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            outline: none !important;
-            color: transparent !important; /* Hides original tiny icon text/clutter */
-        }
-
-        /* Inject our own clean, professional icon in its exact position */
-        [data-testid="stSidebarCollapseButton"]::before {
-            content: "➔"; /* Cute clean arrow icon (or use "☰" for a neat menu hamburger) */
-            font-size: 22px;
-            color: #FF4B4B; /* Matches Streamlit's primary theme color */
-            position: absolute;
-            left: 15px;
-            top: 12px;
-            cursor: pointer;
-            z-index: 2000 !important;
-            transition: transform 0.2s ease;
-        }
-
-        /* Subtle feedback animation when touched or clicked */
-        [data-testid="stSidebarCollapseButton"]:active::before {
-            transform: scale(0.85);
-        }
-
-
-
-
-
-
-
-
-
-
-        /* Ensure the sidebar toggle button sits safely on top of everything */
+        /* Remove all custom button overrides so the native toggle functions normally */
         [data-testid="stSidebarCollapseButton"] {
-            z-index: 1000 !important;
-            background-color: #1E232A !important; /* Makes it pop out cleanly */
-            border-radius: 4px;
-            margin-top: 0.5rem;
+            margin-top: 0.5rem !important;
+            margin-left: 0.5rem !important;
         }
-
-
-
-
 
         
         /* 3. DYNAMICALLY ANCHORED FROZEN TITLE AREA */
@@ -173,13 +126,19 @@ if not video_data.empty:
         ~video_data.get('visibility', pd.Series('show', index=video_data.index)).isin(hide_conditions)
     ].copy()
     
+
+
     # 📌 RENDER FROZEN STICKY HEADER (Stays on screen when users scroll down results)
     st.markdown("""
         <div class="frozen-title">
-            <h1 style="margin:0; padding:10; font-size: 1.5rem;">📺 Korean Video Clips</h1>
-            <p style="margin:0; padding:0; font-size: 0.95rem; color: #a3a8b4;">A collaborative repository for authentic language practice.</p>
+            <h1 style="margin:0; padding: 10px 10px 10px 45px; font-size: 1.5rem;">📺 Korean Video Clips</h1>
+            <p style="margin:0; padding: 0px 0px 0px 45px; font-size: 0.95rem; color: #a3a8b4;">A collaborative repository for authentic language practice.</p>
         </div>
     """, unsafe_allow_html=True)
+
+
+
+
 
     # --- SIDEBAR NAVIGATION ---
     st.sidebar.header("Filter Material")
