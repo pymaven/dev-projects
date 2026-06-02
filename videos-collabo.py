@@ -200,20 +200,27 @@ if not video_data.empty:
             (visible_data['grammar_point'].astype(str).str.strip() == selected_grammar)
         ]
         
-        st.markdown(
-        f'<p style="font-size: 24px; font-weight: 600; margin-bottom: 10px;">'
-        f'Title: {selected_level}, {selected_lesson}, {selected_grammar}'
-        f'</p>', 
-        unsafe_allow_html=True)
-        st.caption(f"Found {len(final_filtered)} relevant example(s)")
-        st.divider()
 
+
+        # 1. Title with zeroed-out bottom margin
+        st.markdown(
+            f'<p style="font-size: 24px; font-weight: 600; margin-bottom: 0px;">'
+            f'Title: {selected_level}, {selected_lesson}, {selected_grammar}'
+            f'</p>', 
+            unsafe_allow_html=True
+        )        
+        st.caption(f"Found {len(final_filtered)} relevant example(s)")
+
+
+
+        st.divider()
 
         for idx, row in final_filtered.iterrows():
             video_id = extract_youtube_id(row['youtube_link'])
             if video_id:
                 # 1. First, parse the raw integers from the sheet data
-                start_time = int(row['timestamp']) if pd.notna(row['timestamp']) else 0
+                #  UPDATED TO READ THE 'start' COLUMN:
+                start_time = int(row['start']) if pd.notna(row['start']) else 0
                 end_time = int(row['end']) if pd.notna(row['end']) and int(row['end']) > start_time else None
                 
                 # 2. DEFINED HERE: Convert raw seconds to human-readable strings (HH:MM:SS)
