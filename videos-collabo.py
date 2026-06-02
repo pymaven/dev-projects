@@ -216,25 +216,22 @@ if not video_data.empty:
                     embed_url += f"&end={end_time}"
 
 
-                # Create a unique session state key for this video row if it doesn't exist
-                # This tracks the internal trigger state for our manual replay button
+# Create a unique session state key for this video row if it doesn't exist
                 state_key = f"replay_{video_id}_{idx}"
                 if state_key not in st.session_state:
                     st.session_state[state_key] = 0
 
-
-
-
-                
-                with st.container():
+                # ✅ PASS THE REPLAY KEY TO THE CONTAINER INSTEAD OF THE HTML COMPONENT
+                with st.container(key=f"container_{video_id}_{idx}_{st.session_state[state_key]}"):
                     col1, col2 = st.columns([2, 1])
                     
                     with col1:
+                        # Removed the illegal 'key=' keyword parameter from here safely
                         st.components.v1.html(
                             f'''
                             <iframe 
                                 width="100%" 
-                                height="600" 
+                                height="450" 
                                 src="{embed_url}" 
                                 title="YouTube video player" 
                                 frameborder="0" 
@@ -243,25 +240,15 @@ if not video_data.empty:
                                 sandbox="allow-scripts allow-same-origin allow-popups allow-presentation">
                             </iframe>
                             ''',
-                            height=600,
-                            key=f"iframe_{video_id}_{idx}_{st.session_state[state_key]}"
+                            height=455
                         )
                     
                     with col2:
-                        # Convert the raw integer seconds into crisp HH:MM:SS format strings
-                        start_formatted = format_time(start_time)
-                        end_formatted = format_time(end_time) if end_time else None
-                        
-                        time_display = f"`{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else "")
-
-
-                        st.markdown(f"**📍Timestamp:** `{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else ""))
+                        st.markdown(f"**📍 Clip Timestamp:** `{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else ""))
                         
                         # 🔄 THE MANUAL REPLAY BUTTON
-                        # Clicking this changes the state key, instantly resetting the video loop above
                         if st.button("🔁 Replay Clip", key=f"btn_{video_id}_{idx}"):
                             st.session_state[state_key] += 1
-                            st.sidebar.empty() # Forces a clean quick UI sync
                             st.rerun()
                         
                         # Interactive Transcripts (Accordion layout)
@@ -273,6 +260,11 @@ if not video_data.empty:
                             with st.expander("👁️ Show English Translation", expanded=False):
                                 st.write(row['english_text'])
 
+
+
+
+                
+ 
 
 
 
