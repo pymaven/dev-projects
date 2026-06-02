@@ -132,12 +132,9 @@ if not video_data.empty:
     st.markdown("""
         <div class="frozen-title">
             <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">📺 Korean Video Clips</h1>
-            <p style="margin:0; padding: 0px 0px 0px 5px; font-size: 0.95rem; color: #a3a8b4;">A collaborative repository for authentic language practice.</p>
+            <p style="margin:0; padding: 0px 0px 0px 5px; font-size: 0.95rem; color: #a3a8b4;">A collaborative, AI-assisted language video archive.</p>
         </div>
     """, unsafe_allow_html=True)
-
-
-
 
 
     # --- SIDEBAR NAVIGATION ---
@@ -203,7 +200,11 @@ if not video_data.empty:
             (visible_data['grammar_point'].astype(str).str.strip() == selected_grammar)
         ]
         
-        st.subheader(f"Title: {selected_level}, {selected_lesson}, {selected_grammar}")
+        st.markdown(
+        f'<p style="font-size: 24px; font-weight: 600; margin-bottom: 10px;">'
+        f'Title: {selected_level}, {selected_lesson}, {selected_grammar}'
+        f'</p>', 
+        unsafe_allow_html=True)
         st.caption(f"Found {len(final_filtered)} relevant example(s)")
         st.divider()
 
@@ -238,7 +239,7 @@ if not video_data.empty:
                             f'''
                             <iframe 
                                 width="100%" 
-                                height="450" 
+                                height="550" 
                                 src="{embed_url}" 
                                 title="YouTube video player" 
                                 frameborder="0" 
@@ -247,7 +248,7 @@ if not video_data.empty:
                                 sandbox="allow-scripts allow-same-origin allow-popups allow-presentation">
                             </iframe>
                             ''',
-                            height=455
+                            height=550
                         )
                     
                     with col2:
