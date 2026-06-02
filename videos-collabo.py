@@ -22,11 +22,41 @@ st.markdown("""
         }
         
             
+            
+
         /* 2. Freeze Main Title Area & Force It Upward */
         [data-testid="stHeader"] {
             background-color: transparent !important;
             height: 0rem !important;
         }
+        
+        /* Smooth, Modern Sidebar Toggle Button for Mobile Screens */
+        [data-testid="stSidebarCollapseButton"] {
+            z-index: 1000 !important;
+            background-color: transparent !important; /* Removes the heavy block background */
+            border: none !important; /* Strips harsh borders */
+            box-shadow: none !important; /* Removes clipping shadows */
+            margin-top: 0.6rem !important;
+            margin-left: 0.5rem !important;
+        }
+
+        /* Add a clean hover effect to the arrow icon itself */
+        [data-testid="stSidebarCollapseButton"] button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 50%;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         /* Ensure the sidebar toggle button sits safely on top of everything */
         [data-testid="stSidebarCollapseButton"] {
             z-index: 1000 !important;
