@@ -204,29 +204,34 @@ if not video_data.empty:
         st.subheader(f"Title: {selected_level}, {selected_lesson}, {selected_grammar}")
         st.caption(f"Found {len(final_filtered)} relevant example(s)")
         st.divider()
-        
+
+
         for idx, row in final_filtered.iterrows():
             video_id = extract_youtube_id(row['youtube_link'])
             if video_id:
+                # 1. First, parse the raw integers from the sheet data
                 start_time = int(row['timestamp']) if pd.notna(row['timestamp']) else 0
                 end_time = int(row['end']) if pd.notna(row['end']) and int(row['end']) > start_time else None
                 
+                # 2. DEFINED HERE: Convert raw seconds to human-readable strings (HH:MM:SS)
+                start_formatted = format_time(start_time)
+                end_formatted = format_time(end_time) if end_time else None
+                
+                # 3. Build the privacy-enhanced looping embed URL
                 embed_url = f"https://www.youtube-nocookie.com/embed/{video_id}?start={start_time}&rel=0&modestbranding=1"
                 if end_time:
                     embed_url += f"&end={end_time}"
-
-
-# Create a unique session state key for this video row if it doesn't exist
+                
+                # 4. State key management for the manual replay reset system
                 state_key = f"replay_{video_id}_{idx}"
                 if state_key not in st.session_state:
                     st.session_state[state_key] = 0
 
-                # ✅ PASS THE REPLAY KEY TO THE CONTAINER INSTEAD OF THE HTML COMPONENT
+                # 5. Render layout container safely
                 with st.container(key=f"container_{video_id}_{idx}_{st.session_state[state_key]}"):
                     col1, col2 = st.columns([2, 1])
                     
                     with col1:
-                        # Removed the illegal 'key=' keyword parameter from here safely
                         st.components.v1.html(
                             f'''
                             <iframe 
@@ -244,35 +249,34 @@ if not video_data.empty:
                         )
                     
                     with col2:
-                        st.markdown(f"**📍 Clip Timestamp:** `{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else ""))
+                        # This line will now read start_formatted perfectly!
+                        time_display = f"`{start_formatted}`" + (f" to `{end_formatted}`" if end_formatted else "")
+                        st.markdown(f"**📍Timestamp:** {time_display}")
                         
-                        # 🔄 THE MANUAL REPLAY BUTTON
+                        # 🔄 The Replay Button
                         if st.button("🔁 Replay Clip", key=f"btn_{video_id}_{idx}"):
                             st.session_state[state_key] += 1
                             st.rerun()
                         
                         # Interactive Transcripts (Accordion layout)
                         if pd.notna(row['korean_text']) and str(row['korean_text']).strip() != "":
-                            with st.expander("👁️ Show Korean Transcript", expanded=False):
+                            with st.expander("Show Korean Transcript", expanded=False):
                                 st.write(row['korean_text'])
                                 
                         if pd.notna(row['english_text']) and str(row['english_text']).strip() != "":
-                            with st.expander("👁️ Show English Translation", expanded=False):
+                            with st.expander("Show English Translation", expanded=False):
                                 st.write(row['english_text'])
+                                
+                st.markdown("---")
 
 
-
-
-                
- 
 
 
 
                                 
-                st.markdown("---")
-    else:
-        st.info("💡 Please refine your selection in the left sidebar menu to populate video clips.")
-        
-    st.markdown('</div>', unsafe_allow_html=True) # Closes the main-content-wrapper
-else:
-    st.warning("Database initialized. Please check your Google Sheet CSV Link.")
+              
+            else:
+                st.info("💡 Please refine your selection in the left sidebar menu to populate video clips.")
+                
+                st.markdown('</div>', unsafe_allow_html=True) # Closes the main-content-wrapper
+
