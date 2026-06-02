@@ -30,23 +30,36 @@ st.markdown("""
             height: 0rem !important;
         }
         
-        /* Smooth, Modern Sidebar Toggle Button for Mobile Screens */
-        [data-testid="stSidebarCollapseButton"] {
-            z-index: 1000 !important;
-            background-color: transparent !important; /* Removes the heavy block background */
-            border: none !important; /* Strips harsh borders */
-            box-shadow: none !important; /* Removes clipping shadows */
-            margin-top: 0.6rem !important;
-            margin-left: 0.5rem !important;
-        }
-
-        /* Add a clean hover effect to the arrow icon itself */
+        /* 📱 CLEAN & POLISHED MOBILE SIDEBAR TOGGLE OVERRIDE */
+        /* Hide all default clashing backgrounds, borders, and shadows entirely */
+        [data-testid="stSidebarCollapseButton"], 
+        [data-testid="stSidebarCollapseButton"] button,
         [data-testid="stSidebarCollapseButton"] button:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-            border-radius: 50%;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            color: transparent !important; /* Hides original tiny icon text/clutter */
         }
 
+        /* Inject our own clean, professional icon in its exact position */
+        [data-testid="stSidebarCollapseButton"]::before {
+            content: "➔"; /* Cute clean arrow icon (or use "☰" for a neat menu hamburger) */
+            font-size: 22px;
+            color: #FF4B4B; /* Matches Streamlit's primary theme color */
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            cursor: pointer;
+            z-index: 2000 !important;
+            transition: transform 0.2s ease;
+        }
 
+        /* Subtle feedback animation when touched or clicked */
+        [data-testid="stSidebarCollapseButton"]:active::before {
+            transform: scale(0.85);
+        }
 
 
 
