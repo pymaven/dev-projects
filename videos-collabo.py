@@ -21,7 +21,7 @@ st.markdown("""
         .block-container {
             padding-top: 0.5rem !important;
             padding-bottom: 0rem !important;
-            padding-left: 2rem !important;
+            padding-left: 2.5rem !important;
             padding-right: 2rem !important;
         }
 
@@ -140,7 +140,7 @@ if not video_data.empty:
     st.markdown("""
         <div class="frozen-title">
             <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">📺 Korean Video Clips</h1>
-            <p style="margin:0; padding: 0px 0px 0px 5px; font-size: 0.95rem; color: #a3a8b4;">A collaborative language video archive.</p>
+            
         </div>
     """, unsafe_allow_html=True)
 
