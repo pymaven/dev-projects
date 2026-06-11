@@ -45,7 +45,7 @@ st.markdown("""
         .frozen-title {
             position: sticky;
             top: 0;
-            background-color: #0E1117; /* Matches default Streamlit dark mode bg */
+            
             z-index: 99;
             padding-top: 1rem;
             padding-bottom: 0.8rem;
