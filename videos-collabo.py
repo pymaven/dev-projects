@@ -46,7 +46,7 @@ st.markdown("""
             position: sticky;
             top: 0;            
             z-index: 99;
-            padding-top: 1rem;
+            padding-top: 0rem;
             padding-bottom: 0.8rem;            
             width: 100%;
         }
