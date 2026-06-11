@@ -206,7 +206,7 @@ if not video_data.empty:
         ]
         
         st.markdown(
-            f'<p style="font-size: 24px; font-weight: 600; margin-bottom: 0px;">'
+            f'<p style="font-size: 20px; font-weight: 300; margin-bottom: 0px;">'
             f'Lesson: {selected_level}, {selected_lesson}, {selected_grammar}'
             f'</p>', 
             unsafe_allow_html=True
