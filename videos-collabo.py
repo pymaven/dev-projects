@@ -62,7 +62,7 @@ st.markdown("""
             margin-bottom: 0rem !important;
         }
         .element-container {
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0rem !important;
         }
     </style>
 """, unsafe_allow_html=True)
