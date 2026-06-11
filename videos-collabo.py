@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import re
-import requests  # 🔄 SWAP: Use Python's built-in network tool instead of database clients
+import requests  # Clean, native network tool
 
-# Page configuration must be the absolute first execution layer!
+# 1. Page configuration must be the absolute first execution layer!
 st.set_page_config(
     page_title="Korean Video Clips", 
     page_icon="📺", 
@@ -13,14 +13,6 @@ st.set_page_config(
 # ⚙️ SECURE ENDPOINT CONFIGURATION
 url: str = st.secrets["SUPABASE_URL"]
 key: str = st.secrets["SUPABASE_ANON_KEY"]
-
-# 🧱 Connect directly to the underlying REST API layer
-# We pass the anon key as a Bearer token so it bypasses RLS cleanly
-headers = {
-    "apikey": key,
-    "Authorization": f"Bearer {key}"
-}
-client = SyncPostgrestClient(f"{url}/rest/v1", headers=headers)
 
 # 💉 INJECT CUSTOM CSS TO FREEZE THE TITLE, REMOVE PADDING, AND RESIZE SPACING
 st.markdown("""
@@ -78,12 +70,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# 🔄 2. STREAMLIT TRANSITION: Fetch master data directly from your central Supabase matrix
-# 🔄 UPDATE: Fetch data natively via standard HTTPS REST request
+# 🔄 Fetch data natively via standard HTTPS REST request
 @st.cache_data(ttl=5)
 def load_data():
     try:
-        # Build the exact direct URL endpoint to your table matrix
+        # Build the direct URL endpoint to your table matrix
         endpoint = f"{url}/rest/v1/korean_clips"
         
         headers = {
@@ -123,7 +114,7 @@ def format_time(seconds):
         else:
             return f"{minutes:02d}:{secs:02d}"
     except:
-        return str(seconds) # Return raw text if it's already written as an explicit timestamp block
+        return str(seconds)
 
 
 # Helper function to extract standard YouTube ID for embeds
@@ -147,7 +138,7 @@ if not video_data.empty:
         if col in visible_data.columns:
             visible_data = visible_data[~visible_data[col].astype(str).str.strip().isin(hide_conditions)]
 
-    # 📌 RENDER FROZEN STICKY HEADER (Stays locked on screen when users scroll deep)
+    # 📌 RENDER FROZEN STICKY HEADER
     st.markdown("""
         <div class="frozen-title">
             <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">📺 Korean Video Clips</h1>
