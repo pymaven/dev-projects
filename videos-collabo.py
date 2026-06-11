@@ -47,7 +47,7 @@ st.markdown("""
             top: 0;            
             z-index: 99;
             padding-top: 0rem;
-            padding-bottom: 0.8rem;            
+            padding-bottom: 0rem;            
             width: 100%;
         }
         
@@ -58,8 +58,8 @@ st.markdown("""
         
         /* Tighten spacing layout metrics */
         hr {
-            margin-top: 0.5rem !important;
-            margin-bottom: 0.5rem !important;
+            margin-top: 0rem !important;
+            margin-bottom: 0rem !important;
         }
         .element-container {
             margin-bottom: 0.5rem !important;
