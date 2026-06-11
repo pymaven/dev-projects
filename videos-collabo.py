@@ -46,7 +46,7 @@ st.markdown("""
             position: sticky;
             top: 0;            
             z-index: 99;
-            padding-top: 0rem;
+            padding-top: 0.5rem;
             padding-bottom: 0rem;            
             width: 100%;
         }
@@ -139,7 +139,7 @@ if not video_data.empty:
     # 📌 RENDER FROZEN STICKY HEADER
     st.markdown("""
         <div class="frozen-title">
-            <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">📺 Korean Video Clips</h1>
+            <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1rem;">📺 Korean Video Clips</h1>
             
         </div>
     """, unsafe_allow_html=True)
@@ -206,7 +206,7 @@ if not video_data.empty:
         ]
         
         st.markdown(
-            f'<p style="font-size: 20px; font-weight: 300; margin-bottom: 0px;">'
+            f'<p style="font-size: 18px; font-weight: 500; margin-bottom: 0px;">'
             f'Lesson: {selected_level}, {selected_lesson}, {selected_grammar}'
             f'</p>', 
             unsafe_allow_html=True
