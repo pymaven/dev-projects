@@ -3,6 +3,7 @@ streamlit
 
 # Data handling
 pandas
+supabase
 
 # Google API
 google-api-python-client
@@ -16,3 +17,5 @@ youtube-transcript-api==0.6.1
 
 # Translation
 googletrans==4.0.0-rc1
+
+
