@@ -6,7 +6,7 @@ import requests  # Clean, native network tool
 # 1. Page configuration must be the absolute first execution layer!
 st.set_page_config(
     page_title="Korean Video Clips", 
-    page_icon="🎥", 
+    page_icon="🍿", 
     layout="wide"
 )
 
@@ -139,7 +139,7 @@ if not video_data.empty:
     # 📌 RENDER FROZEN STICKY HEADER
     st.markdown("""
         <div class="frozen-title">
-            <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">🎥 Korean Video Clips</h1>
+            <h1 style="margin:0; padding: 10px 0px 0px 5px; font-size: 1.5rem;">🍿 Korean Video Clips</h1>
             
         </div>
     """, unsafe_allow_html=True)
