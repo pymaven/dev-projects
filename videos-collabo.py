@@ -44,12 +44,10 @@ st.markdown("""
         
         .frozen-title {
             position: sticky;
-            top: 0;
-            
+            top: 0;            
             z-index: 99;
             padding-top: 1rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid #31333F;
+            padding-bottom: 0.8rem;            
             width: 100%;
         }
         
