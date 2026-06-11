@@ -2,9 +2,8 @@
 streamlit
 
 # Data handling
-setuptools
 pandas
-postgrest
+requests
 
 # Google API
 google-api-python-client

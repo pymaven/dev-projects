@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import re
-from postgrest import SyncPostgrestClient
+import requests  # 🔄 SWAP: Use Python's built-in network tool instead of database clients
 
 # Page configuration must be the absolute first execution layer!
 st.set_page_config(
@@ -79,18 +79,29 @@ st.markdown("""
 
 
 # 🔄 2. STREAMLIT TRANSITION: Fetch master data directly from your central Supabase matrix
-# 🔄 UPDATE: Fetch data directly via the lightweight client engine
+# 🔄 UPDATE: Fetch data natively via standard HTTPS REST request
 @st.cache_data(ttl=5)
 def load_data():
     try:
-        # Pull records using identical syntax (.from_().select())
-        response = client.from_("korean_clips").select("*").execute()
-        records = response.data
+        # Build the exact direct URL endpoint to your table matrix
+        endpoint = f"{url}/rest/v1/korean_clips"
         
-        if records:
-            return pd.DataFrame(records)
+        headers = {
+            "apikey": key,
+            "Authorization": f"Bearer {key}"
+        }
+        
+        # Fire a secure GET network call directly to Supabase
+        response = requests.get(endpoint, headers=headers)
+        
+        if response.status_code == 200:
+            records = response.json()
+            if records:
+                return pd.DataFrame(records)
         else:
-            return pd.DataFrame()
+            st.error(f"Database returned status code: {response.status_code}")
+            
+        return pd.DataFrame()
             
     except Exception as e:
         st.error(f"Error loading data layers from database: {e}")
