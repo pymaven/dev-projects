@@ -3,7 +3,7 @@ streamlit
 
 # Data handling
 pandas
-supabase==2.4.0
+postgrest
 
 # Google API
 google-api-python-client

@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 import re
-from supabase import create_client, Client
+from postgrest import SyncPostgrestClient
 
-# 1. CRITICAL STREAMLIT FIX: Page configuration MUST be the absolute first execution layer!
+# Page configuration must be the absolute first execution layer!
 st.set_page_config(
     page_title="Korean Video Clips", 
     page_icon="📺", 
@@ -13,7 +13,14 @@ st.set_page_config(
 # ⚙️ SECURE ENDPOINT CONFIGURATION
 url: str = st.secrets["SUPABASE_URL"]
 key: str = st.secrets["SUPABASE_ANON_KEY"]
-supabase: Client = create_client(url, key)
+
+# 🧱 Connect directly to the underlying REST API layer
+# We pass the anon key as a Bearer token so it bypasses RLS cleanly
+headers = {
+    "apikey": key,
+    "Authorization": f"Bearer {key}"
+}
+client = SyncPostgrestClient(f"{url}/rest/v1", headers=headers)
 
 # 💉 INJECT CUSTOM CSS TO FREEZE THE TITLE, REMOVE PADDING, AND RESIZE SPACING
 st.markdown("""
@@ -72,21 +79,21 @@ st.markdown("""
 
 
 # 🔄 2. STREAMLIT TRANSITION: Fetch master data directly from your central Supabase matrix
+# 🔄 UPDATE: Fetch data directly via the lightweight client engine
 @st.cache_data(ttl=5)
 def load_data():
     try:
-        # Fetch all data records from your single table
-        response = supabase.table("korean_clips").select("*").execute()
+        # Pull records using identical syntax (.from_().select())
+        response = client.from_("korean_clips").select("*").execute()
         records = response.data
         
         if records:
-            # Convert the list of dictionaries smoothly into a standard Pandas DataFrame
             return pd.DataFrame(records)
         else:
             return pd.DataFrame()
             
     except Exception as e:
-        st.error(f"Error loading data layers from Supabase: {e}")
+        st.error(f"Error loading data layers from database: {e}")
         return pd.DataFrame()
 
 
